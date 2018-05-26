@@ -46,15 +46,15 @@ shinyServer(
     output$myplot <- renderPlot({
       if(input$order=="All"){
         
-        colx = dat[,as.numeric(input$xvar)]
-        coly = dat[,as.numeric(input$yvar)]
-        Order = dat[,1]
-        Species = dat$species
-        dat_new = data.frame(colx,coly,Order,Species)
-        dat_new = dat_new[complete.cases(dat_new),]
+        colx <-  dat[,as.numeric(input$xvar)]
+        coly <-  dat[,as.numeric(input$yvar)]
+        Order <-  dat[,1]
+        Species <-  dat$species
+        dat_new <-  data.frame(colx,coly,Order,Species)
+        dat_new <-  dat_new[complete.cases(dat_new),]
         
         if(input$fitdata=="Linear"){
-          g = ggplot(dat_new, aes(x=colx, y=coly, col=Order)) + geom_point() +
+          g <-  ggplot(dat_new, aes(x=colx, y=coly, col=Order)) + geom_point() +
             xlab(lab_key[[as.numeric(input$xvar)]]) + 
             ylab(lab_key[[as.numeric(input$yvar)]]) +
             scale_x_log10() + scale_y_log10() + 
@@ -62,29 +62,29 @@ shinyServer(
                   legend.text=element_text(size=14),legend.title=element_text(size=14,face="bold"))+
             geom_smooth(aes(group=1),method="lm",color="black",se=TRUE) 
         } else if (input$fitdata=="None"){
-          g = ggplot(dat_new, aes(x=colx, y=coly, col=Order)) + geom_point() +
+          g <-  ggplot(dat_new, aes(x=colx, y=coly, col=Order)) + geom_point() +
             xlab(lab_key[[as.numeric(input$xvar)]]) + ylab(lab_key[[as.numeric(input$yvar)]]) +
             scale_x_log10() + scale_y_log10() + 
             theme(axis.text=element_text(size=12),axis.title=element_text(size=14,face="bold"),
                   legend.text=element_text(size=14),legend.title=element_text(size=14,face="bold")) 
         }
       } else {
-        order.rows = which(dat[,1]==input$order)
-        colx = dat[order.rows,as.numeric(input$xvar)]
-        coly = dat[order.rows,as.numeric(input$yvar)]
-        Family = dat[order.rows,2]
-        Species = dat$species[order.rows]
-        dat_new = data.frame(colx,coly,Family,Species)
-        dat_new = dat_new[complete.cases(dat_new),]
+        order_rows <-  which(dat[,1]==input$order)
+        colx <-  dat[order_rows,as.numeric(input$xvar)]
+        coly <-  dat[order_rows,as.numeric(input$yvar)]
+        Family <-  dat[order_rows,2]
+        Species <-  dat$species[order_rows]
+        dat_new <-  data.frame(colx,coly,Family,Species)
+        dat_new <-  dat_new[complete.cases(dat_new),]
           if(input$fitdata=="Linear"){
-            g = ggplot(dat_new, aes(x=colx, y=coly, col=Family)) + geom_point()+
+            g <-  ggplot(dat_new, aes(x=colx, y=coly, col=Family)) + geom_point()+
               xlab(lab_key[[as.numeric(input$xvar)]]) + ylab(lab_key[[as.numeric(input$yvar)]])+
               scale_x_log10() + scale_y_log10()+ 
               theme(axis.text=element_text(size=12),axis.title=element_text(size=14,face="bold"),
                     legend.text=element_text(size=14),legend.title=element_text(size=14,face="bold"))+
               geom_smooth(aes(group=1),method="lm",color="black",se=TRUE) 
           } else if (input$fitdata=="None"){
-            g = ggplot(dat_new, aes(x=colx, y=coly, col=Family)) + geom_point()+
+            g <-  ggplot(dat_new, aes(x=colx, y=coly, col=Family)) + geom_point()+
               xlab(lab_key[[as.numeric(input$xvar)]]) + ylab(lab_key[[as.numeric(input$yvar)]])+
               scale_x_log10() + scale_y_log10()+ 
               theme(axis.text=element_text(size=12),axis.title=element_text(size=14,face="bold"),
@@ -99,12 +99,12 @@ shinyServer(
     output$equation <- renderUI({
       if(input$fitdata=="Linear"){
         if(input$order=="All"){
-          colx = dat[,as.numeric(input$xvar)]
-          coly = dat[,as.numeric(input$yvar)]
-          dat_new = data.frame(colx,coly)
+          colx <-  dat[,as.numeric(input$xvar)]
+          coly <-  dat[,as.numeric(input$yvar)]
+          dat_new <-  data.frame(colx,coly)
           colnames(dat_new) <- c(tab_key[[as.numeric(input$xvar)]],
                                  tab_key[[as.numeric(input$yvar)]])
-          dat_new = dat_new[complete.cases(dat_new),]
+          dat_new <-  dat_new[complete.cases(dat_new),]
           model <- lm(log(coly) ~ log(colx))
           slope <- signif(as.numeric(coef(model)[2]),3)
           int <- signif(as.numeric(coef(model)[1]), 3)
@@ -117,11 +117,11 @@ shinyServer(
 
           HTML(paste(str1, str2, sep = '<br/>'))
         } else {
-          order.rows = which(dat[,1]==input$order)
-          colx = dat[order.rows,as.numeric(input$xvar)]
-          coly = dat[order.rows,as.numeric(input$yvar)]
-          dat_new = data.frame(colx,coly)
-          dat_new = dat_new[complete.cases(dat_new),]
+          order_rows <-  which(dat[,1]==input$order)
+          colx <-  dat[order_rows,as.numeric(input$xvar)]
+          coly <-  dat[order_rows,as.numeric(input$yvar)]
+          dat_new <-  data.frame(colx,coly)
+          dat_new <-  dat_new[complete.cases(dat_new),]
           model <- lm(log(coly) ~ log(colx))
           slope <- signif(as.numeric(coef(model)[2]),3)
           int <- signif(as.numeric(coef(model)[1]), 3)
@@ -142,21 +142,21 @@ shinyServer(
     # Output selected points info
     output$info <- renderPrint({
       if(input$order=="All"){
-        colx = dat[,as.numeric(input$xvar)]
-        coly = dat[,as.numeric(input$yvar)]
-        Order = dat[,1]
-        Species = dat$species
+        colx <-  dat[,as.numeric(input$xvar)]
+        coly <-  dat[,as.numeric(input$yvar)]
+        Order <-  dat[,1]
+        Species <-  dat$species
         dat_new <- data.frame(colx,coly,Order,Species)
         dat_new <- dat_new[complete.cases(dat_new),]
         
       } else {
-        order.rows = which(dat[,1]==input$order)
-        colx = dat[order.rows,as.numeric(input$xvar)]
-        coly = dat[order.rows,as.numeric(input$yvar)]
-        Family = dat[order.rows,2]
-        Species = dat$species[order.rows]
-        dat_new = data.frame(colx,coly,Family,Species)
-        dat_new = dat_new[complete.cases(dat_new),]
+        order_rows <-  which(dat[,1]==input$order)
+        colx <-  dat[order_rows,as.numeric(input$xvar)]
+        coly <-  dat[order_rows,as.numeric(input$yvar)]
+        Family <-  dat[order_rows,2]
+        Species <-  dat$species[order_rows]
+        dat_new <-  data.frame(colx,coly,Family,Species)
+        dat_new <-  dat_new[complete.cases(dat_new),]
       }
       brushedPoints(dat_new, input$plot_brush)
     })
